@@ -30,11 +30,9 @@ function findSeat(){
                     restSeat(i, (j + 3)) // função para mostrar o restante da fileira
                     break // para(stop) a procura por poltrona na fileira atual
                 }
-                
-            } 
-            if(!seats[i][j]) {
-                document.getElementById(`seat${i}${j + 1}`).src = 'img/seat_unavailable.png'
-                document.getElementById(`seat${i}${j + 1}`).alt = ' Unavailable seat'
+            } else {
+                // poltrona não disponível
+                setSeat(i, j + 1, 'unavailable')
             }
         }
         if (ok){
@@ -47,15 +45,13 @@ function findSeat(){
 // Inicializa a aparência de todas as poltronas
 function initSeats(){
     for (var i = 0; i < seats.length; i++){
-        for (var j = 0; j < seats[i].length; i++){
-            if (seats[i]){
+        for (var j = 0; j < seats[i].length; j++){
+            if (seats[i][j]){
                 // Define a poltrona como disponível
-                document.getElementById('seat' + (i + 1)).src = 'img/seat_available.png'
-                document.getElementById('seat' + (i + 1)).alt = 'Poltrona disponível'
+                setSeat(i, j + 1, 'available')
             } else {
                 // Define a poltrona como indisponível
-                document.getElementById('seat' + (i + 1)).src = 'img/seat_unavailable.png'
-                document.getElementById('seat' + (i + 1)).alt = 'Poltrona indisponível'
+                setSeat(i, j + 1, 'unavailable')
             }
         }
     }
@@ -66,12 +62,10 @@ function restSeat(m, n){
     for (var i = n; i < seats[m].length; i++){        
         if (seats[m][i]){
             // Define a poltrona como disponível
-            document.getElementById(`seat${m}${i + 1}`).src = 'img/seat_available.png'
-            document.getElementById(`seat${m}${i + 1}`).alt = 'Poltrona disponível'
+            setSeat(m, i + 1, 'available')
         } else {
             // Define a poltrona como indisponível
-            document.getElementById(`seat${m}${i + 1}`).src = 'img/seat_unavailable.png'
-            document.getElementById(`seat${m}${i + 1}`).alt = 'Poltrona indisponível'
+            setSeat(m, i + 1, 'unavailable')
         }
     }
 }
@@ -82,12 +76,10 @@ function restRows(m){
         for (var j = 0; j < seats[i].length; j++){
             if (seats[i][j]){
                 // Define a poltrona como disponível
-                document.getElementById(`seat${i}${j + 1}`).src = 'img/seat_available.png'
-                document.getElementById(`seat${i}${j + 1}`).alt = 'Poltrona disponível'
+                setSeat(i, j + 1, 'available')
             } else {
                 // Define a poltrona como indisponível
-                document.getElementById(`seat${i}${j + 1}`).src = 'img/seat_unavailable.png'
-                document.getElementById(`seat${i}${j + 1}`).alt = 'Poltrona indisponível'
+                setSeat(i, j + 1, 'unavailable')
             }
         }
     }
@@ -101,21 +93,25 @@ function threeChairs(i, j){
         if (accept){
             for (var x = 0; x <= 2; x++){
                 selSeat = j + x
-                document.getElementById(`seat${i}${j + x + 1}`).src = 'img/seat_select.png'
-                document.getElementById(`seat${i}${j + x + 1}`).alt = 'Selected seat'
+                setSeat(i, j + x + 1, 'select')
             }
             ok = true
         } else {
             // O usuário rejeitou a poltrona, então desfaz a marcação e continua procurando
             selSeat = -1
-            document.getElementById(`seat${i}${j + 1}`).src = 'img/seat_available.png'
-            document.getElementById(`seat${i}${j + 1}`).alt = 'Available seat'
+            setSeat(i, j + 1, 'available')
             ok = false
         }
     } else {
         selSeat = -1
-        document.getElementById(`seat${i}${j + 1}`).src = 'img/seat_available.png'
-        document.getElementById(`seat${i}${j + 1}`).alt = 'Available seat'
+        setSeat(i, j + 1, 'available')
     }
     return ok
+}
+
+// Função para linkar a imagem da cadeira em seu devido lugar e disponibilidade no html
+function setSeat(fileira, assento, status) {
+    document.getElementById(`seat${fileira}${assento}`).src = `img/seat_${status}.png`
+    status = status.charAt(0).toUpperCase() + status.slice(1)
+    document.getElementById(`seat${fileira}${assento}`).alt = `${status} seat`
 }
