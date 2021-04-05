@@ -23,7 +23,7 @@
 
 
 
-<img src="img/logo-jclops-300.png" style="width: 80px" align="left">
+<img src="img/logo-jclops-300.png" width="80px" align="left">
 
 
 
